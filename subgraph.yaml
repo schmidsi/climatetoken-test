@@ -1,0 +1,42 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ClimateToken
+    network: mumbai
+    source:
+      address: "0x174A943ff431306338031CE875527A3A55849DB7"
+      abi: ClimateToken
+      startBlock: 32346321
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ClaimApproved
+        - NewAdminAdded
+        - NewClaim
+        - NewFarmer
+        - Rewarded
+        - Transfer
+      abis:
+        - name: ClimateToken
+          file: ./abis/ClimateToken.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: ClaimApproved(indexed address)
+          handler: handleClaimApproved
+        - event: NewAdminAdded(address)
+          handler: handleNewAdminAdded
+        - event: NewClaim(indexed address)
+          handler: handleNewClaim
+        - event: NewFarmer(address)
+          handler: handleNewFarmer
+        - event: Rewarded(indexed address)
+          handler: handleRewarded
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/climate-token.ts
